@@ -330,16 +330,16 @@ function Nav() {
 function Hero() {
   return <section id="home" className="relative min-h-[calc(100vh-68px)] lg:min-h-[calc(100vh-76px)] overflow-hidden pt-[68px] sm:pt-[72px] lg:pt-[76px] flex flex-col justify-start">
 
-    <div className="container-nx relative z-10 w-full pt-8 pb-16 sm:pt-10 sm:pb-20 lg:pt-12 lg:pb-24">
-      <div className="grid lg:grid-cols-12 gap-8 xl:gap-12 items-center">
+    <div className="container-nx relative z-10 w-full pt-6 pb-12 sm:pt-8 sm:pb-16 lg:pt-10 lg:pb-16">
+      <div className="grid lg:grid-cols-12 gap-8 xl:gap-12 items-start">
         <div className="lg:col-span-6 xl:col-span-5 pr-0 relative">
           <Reveal delay="reveal-delay-1"><KineticText as="h1" className="display text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.05] tracking-[-0.02em] [font-optical-sizing:auto]" data-testid="heading-hero">Creating better<br />spaces through<br />acoustic<br />excellence.</KineticText></Reveal>
-          <Reveal delay="reveal-delay-2"><p className="mt-6 sm:mt-8 max-w-[480px] text-[1.05rem] leading-relaxed text-[hsl(var(--muted-foreground))]">Engineering-driven acoustic solutions for quieter, better-performing spaces.</p></Reveal>
-          <Reveal delay="reveal-delay-3"><div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4"><ArrowFillButton href="#contact" variant="primary" size="default" data-testid="link-hero-contact" btnText="Discuss your project" /></div></Reveal>
-          <div className="mt-10 hidden items-center gap-3 lg:flex"><span className="mono text-[.6rem] text-[hsl(var(--muted-foreground))]">Scroll to explore</span><span className="h-px w-14 bg-[hsl(var(--border))]" /></div>
+          <Reveal delay="reveal-delay-2"><p className="mt-5 sm:mt-6 max-w-[480px] text-[1.05rem] leading-relaxed text-[hsl(var(--muted-foreground))]">Engineering-driven acoustic solutions for quieter, better-performing spaces.</p></Reveal>
+          <Reveal delay="reveal-delay-3"><div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4"><ArrowFillButton href="#contact" variant="primary" size="default" data-testid="link-hero-contact" btnText="Discuss your project" /></div></Reveal>
+          <div className="mt-8 hidden items-center gap-3 lg:flex"><span className="mono text-[.6rem] text-[hsl(var(--muted-foreground))]">Scroll to explore</span><span className="h-px w-14 bg-[hsl(var(--border))]" /></div>
 
           {/* Mobile responsive image display */}
-          <div className="mt-10 relative w-full h-[280px] sm:h-[380px] overflow-hidden border border-[hsl(var(--border))] rounded-2xl lg:hidden">
+          <div className="mt-8 relative w-full h-[280px] sm:h-[380px] overflow-hidden border border-[hsl(var(--border))] rounded-2xl lg:hidden">
             <img src={auditorium} alt="World-class acoustic auditorium with curved timber sound diffusion architecture" className="cinematic-img h-full w-full object-cover object-center" referrerPolicy="no-referrer" data-testid="img-hero-auditorium-mobile" />
             <div className="absolute bottom-4 left-4 flex items-center gap-2.5 bg-[hsl(var(--background)/92%)] backdrop-blur-sm px-3 py-1.5 border border-[hsl(var(--border))] rounded-lg">
               <span className="h-2 w-2 rounded-full bg-[hsl(var(--accent))]" />
@@ -349,7 +349,7 @@ function Hero() {
         </div>
         
         {/* Desktop right-aligned image as a rounded floating card */}
-        <div className="hidden lg:block lg:col-span-6 xl:col-span-7 relative h-[45vh] min-h-[380px] max-h-[500px] -mr-8 lg:-mr-12 xl:-mr-20 2xl:-mr-32 rounded-[2rem] overflow-hidden shadow-[0_40px_100px_rgba(40,30,20,0.15)] border border-[hsl(var(--border)/40%)]">
+        <div className="hidden lg:block lg:col-span-6 xl:col-span-7 relative h-[45vh] min-h-[380px] max-h-[500px] mt-2 -mr-8 lg:-mr-12 xl:-mr-20 2xl:-mr-32 rounded-[2rem] overflow-hidden shadow-[0_40px_100px_rgba(40,30,20,0.15)] border border-[hsl(var(--border)/40%)]">
           <img src={auditorium} alt="World-class acoustic auditorium" className="hero-image cinematic-img h-full w-full object-cover object-center" referrerPolicy="no-referrer" data-testid="img-hero-auditorium" />
           <div className="absolute bottom-6 right-6 flex items-center gap-3 bg-[hsl(var(--background)/92%)] backdrop-blur-md px-4 py-2 rounded-xl border border-[hsl(var(--border))] text-[hsl(var(--foreground))] shadow-md">
             <span className="h-2 w-2 rounded-full bg-[hsl(var(--accent))]" />

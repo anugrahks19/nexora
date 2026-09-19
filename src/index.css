@@ -427,11 +427,18 @@ textarea.input-nx { resize: vertical; min-height: 120px; }
 
 .container-nx {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1120px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .container-nx {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
 
 @media (max-width: 767px) {

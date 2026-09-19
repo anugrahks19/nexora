@@ -328,9 +328,9 @@ function Nav() {
 }
 
 function Hero() {
-  return <section id="home" className="relative min-h-[calc(100vh-68px)] lg:min-h-[calc(100vh-76px)] overflow-hidden pt-[68px] sm:pt-[72px] lg:pt-[76px] flex flex-col justify-center">
+  return <section id="home" className="relative min-h-[calc(100vh-68px)] lg:min-h-[calc(100vh-76px)] overflow-hidden pt-[68px] sm:pt-[72px] lg:pt-[76px] flex flex-col justify-start">
 
-    <div className="container-nx relative z-10 w-full py-8 sm:py-12 lg:py-16">
+    <div className="container-nx relative z-10 w-full pt-8 pb-16 sm:pt-10 sm:pb-20 lg:pt-12 lg:pb-24">
       <div className="grid lg:grid-cols-12 gap-8 xl:gap-12 items-center">
         <div className="lg:col-span-6 xl:col-span-5 pr-0 relative">
           <Reveal delay="reveal-delay-1"><KineticText as="h1" className="display text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.05] tracking-[-0.02em] [font-optical-sizing:auto]" data-testid="heading-hero">Creating better<br />spaces through<br />acoustic<br />excellence.</KineticText></Reveal>

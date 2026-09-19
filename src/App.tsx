@@ -753,21 +753,40 @@ function InteractiveBackground() {
 
   useEffect(() => {
     let rafId: number;
-    const handleMouseMove = (e: MouseEvent) => {
+    
+    const updatePosition = (x: number, y: number) => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        setPosition({ x: e.clientX, y: e.clientY });
+        setPosition({ x, y });
         setIsHovering(true);
       });
     };
+
+    const handleMouseMove = (e: MouseEvent) => updatePosition(e.clientX, e.clientY);
+    const handleTouch = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        updatePosition(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+    
     const handleMouseLeave = () => setIsHovering(false);
+    const handleTouchEnd = () => {
+      // Keep it visible on mobile at the last touched position
+      // Alternatively, we could fade it out, but keeping it looks better on mobile
+    };
 
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchstart', handleTouch, { passive: true });
+    window.addEventListener('touchmove', handleTouch, { passive: true });
     document.body.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchstart', handleTouch);
+      window.removeEventListener('touchmove', handleTouch);
       document.body.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('touchend', handleTouchEnd);
       cancelAnimationFrame(rafId);
     };
   }, []);

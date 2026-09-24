@@ -15,23 +15,22 @@ export interface TabItem {
 export const nexoraTabs: TabItem[] = [
   {
     id: "about",
-    label: "About Nexora",
-    title: "Acoustics engineered for the way people live and work.",
+    label: "Who We Are",
+    title: "Who We Are",
     paragraphs: [
-      "At Nexora Acoustic Engineering Services, we specialize in acoustic consultancy, noise control, and sound engineering solutions for buildings and mechanical systems.",
-      "We combine technical expertise, engineering knowledge, and practical project experience to develop effective solutions for residential, commercial, hospitality, entertainment, and industrial developments.",
-      "Working closely with architects, MEP consultants, developers, contractors, and building owners, we integrate acoustic requirements into the design process and help deliver spaces with superior acoustic performance.",
+      "Nexora Acoustic Engineering Services is a specialist acoustic engineering company providing professional acoustic design, analysis, noise control, vibration control, and acoustic testing solutions for buildings, infrastructure, and mechanical systems.",
+      "We combine engineering expertise, acoustic modelling, technical analysis, and practical noise-control solutions to help clients achieve acoustic comfort, privacy, regulatory compliance, and high-performance building environments.",
+      "We work closely with architects, MEP consultants, developers, contractors, manufacturers, and building owners from concept design through construction, testing, and project completion.",
     ],
     icon: Building2,
   },
   {
     id: "strategic-intent",
-    label: "Our Strategic Intent",
-    title: "Our Strategic Intent",
+    label: "Mission & Vision",
+    title: "Our Mission & Vision",
     paragraphs: [
       "Our Mission: To provide reliable, practical, and innovative acoustic engineering solutions that improve the comfort, performance, and quality of built environments.",
-      "Our Vision: We aim to become a trusted acoustic engineering partner for modern buildings and infrastructure through technical excellence, responsive service, and practical solutions.",
-      "By uniting predictive modeling, environmental acoustics, and rigorous engineering, we ensure that every structure achieves quiet compliance, occupant comfort, and long-term acoustic integrity.",
+      "Our Vision: To become a trusted acoustic engineering partner for modern buildings and infrastructure.",
     ],
     icon: Target,
   },

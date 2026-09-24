@@ -1,5 +1,9 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
-import { ArrowDown, ArrowUpRight, Check, ChevronRight, Menu, Paperclip, X } from 'lucide-react';
+import { useEffect, useState, useRef, type FormEvent, type ReactNode } from 'react';
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+import { ArrowDown, ArrowUpRight, Check, ChevronRight, Menu, Paperclip, X, Sparkles } from 'lucide-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -12,6 +16,10 @@ import { AnimatedTestimonials } from '@/components/ui/testimonial';
 import { CircularRevealHeading } from '@/components/ui/circular-reveal-heading';
 import CircularSplitRoll from '@/components/ui/circular-split-roll';
 import { NexoraSharedTabs } from '@/components/ui/nexora-shared-tabs';
+import { CarouselStacked } from '@/components/ui/carousel-07';
+import { Pointer } from '@/components/ui/pointer';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
+import { TiltCard } from '@/components/ui/tilt-card';
 import { cn } from '@/lib/utils';
 
 const queryClient = new QueryClient();
@@ -24,10 +32,10 @@ const services = [
     title: 'Architectural Acoustics',
     sub: 'Designing spaces that sound right',
     subtitle: 'Designing spaces that sound right',
-    body: 'Statutory compliance, speech privacy thresholds, and partition sound insulation across commercial, civic, and residential spaces.',
-    description: 'Statutory compliance, speech privacy thresholds, and partition sound insulation across commercial, civic, and residential spaces.',
-    tags: 'Room Acoustics  •  Sound Insulation  •  Reverberation Control  •  Speech Privacy',
-    image: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&w=800&q=80',
+    body: 'Acoustic design solutions that improve sound quality, privacy, and occupant comfort.',
+    description: 'Acoustic design solutions that improve sound quality, privacy, and occupant comfort.',
+    tags: 'Room acoustic design  •  Reverberation control  •  Sound insulation design  •  Airborne sound insulation  •  Impact sound insulation  •  Façade acoustic assessment',
+    image: '/assets/Architectural Acoustics.png',
     badge: 'Building Design',
   },
   {
@@ -36,10 +44,10 @@ const services = [
     title: 'Mechanical Acoustics',
     sub: 'Controlling building services noise',
     subtitle: 'Controlling building services noise',
-    body: 'Targeted noise and vibration attenuation for HVAC chillers, plant rooms, ductwork paths, and MEP riser penetrations.',
-    description: 'Targeted noise and vibration attenuation for HVAC chillers, plant rooms, ductwork paths, and MEP riser penetrations.',
-    tags: 'HVAC Attenuation  •  Plant Rooms  •  Duct-Borne Noise  •  Vibration Isolation',
-    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
+    body: 'Noise and vibration solutions for building services and mechanical equipment.',
+    description: 'Noise and vibration solutions for building services and mechanical equipment.',
+    tags: 'HVAC acoustic assessment  •  AHU, FAHU and FCU noise assessment  •  Chiller noise assessment  •  Cooling tower noise assessment  •  Generator room acoustic assessment',
+    image: '/assets/Mechanical Acoustics.png',
     badge: 'MEP Engineering',
   },
   {
@@ -48,10 +56,10 @@ const services = [
     title: 'Noise & Vibration Control',
     sub: 'Identify. Assess. Predict. Control.',
     subtitle: 'Identify. Assess. Predict. Control.',
-    body: 'Environmental noise surveys, 3D ray-tracing sound propagation models, and structural vibration isolation strategies.',
-    description: 'Environmental noise surveys, 3D ray-tracing sound propagation models, and structural vibration isolation strategies.',
-    tags: 'Noise Assessment  •  3D Ray Tracing  •  Prediction  •  Mitigation',
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80',
+    body: 'Engineering solutions to identify, assess, and control unwanted noise.',
+    description: 'Engineering solutions to identify, assess, and control unwanted noise.',
+    tags: 'Environmental noise assessment  •  Noise impact studies  •  Noise prediction  •  Noise mitigation  •  Sound transmission analysis',
+    image: '/assets/Noise & Vibration control.png',
     badge: 'Environmental & Site',
   },
   {
@@ -60,56 +68,44 @@ const services = [
     title: 'Acoustic Testing',
     sub: 'Measure performance. Verify results.',
     subtitle: 'Measure performance. Verify results.',
-    body: 'On-site precision commissioning testing for sound insulation (DnTw / ASTC), room reverberation (RT60), and noise criteria (NC / NR).',
-    description: 'On-site precision commissioning testing for sound insulation (DnTw / ASTC), room reverberation (RT60), and noise criteria (NC / NR).',
-    tags: 'Sound Insulation (DnTw)  •  RT60 Testing  •  NC/NR Verification  •  Certification',
-    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+    body: 'Professional on-site measurements to assess and verify acoustic performance.',
+    description: 'Professional on-site measurements to assess and verify acoustic performance.',
+    tags: 'Environmental noise surveys  •  Sound insulation testing  •  Reverberation time  •  Background noise measurement  •  Room acoustic assessment',
+    image: '/assets/Acoustic testing.png',
     badge: 'Commissioning',
-  },
-  {
-    id: 5,
-    number: '[ 05 ]',
-    title: 'Specialist Venues',
-    sub: 'High-clarity acoustic environments',
-    subtitle: 'High-clarity acoustic environments',
-    body: 'Tuned timber acoustic baffles, flutter echo mitigation, and studio-grade sound isolation for auditoriums, studios, and cinemas.',
-    description: 'Tuned timber acoustic baffles, flutter echo mitigation, and studio-grade sound isolation for auditoriums, studios, and cinemas.',
-    tags: 'Auditoriums  •  Recording Studios  •  Cinemas  •  Performance Halls',
-    image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80',
-    badge: 'Acoustic Architecture',
-  },
+  }
 ];
 
 const sectors = [
   {
     name: 'Residential & Mixed-Use',
     title: 'Residential & Mixed-Use',
-    quote: 'Statutory acoustic compliance, internal speech privacy thresholds, and sound insulation detailing for multi-residential towers, apartments, residential estates, and mixed-use developments to ensure peaceful living spaces.',
-    src: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
+    quote: 'Residential towers, Apartments, Villas, Luxury residences, Mixed-use developments, and Residential communities.',
+    src: '/assets/Residential & Mixed-Use.png',
   },
   {
     name: 'Hotels & Hospitality',
     title: 'Hotels & Hospitality',
-    quote: 'High-performance inter-room partition isolation, mechanical plant vibration control, and quiet air distribution ensuring five-star acoustic comfort for luxury guestrooms, dining venues, and conference facilities.',
-    src: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+    quote: 'Hotels, Resorts, Serviced apartments, Restaurants, Hospitality facilities, and Luxury developments.',
+    src: '/assets/Hotels & Hospitality.png',
   },
   {
-    name: 'Commercial & Workspaces',
-    title: 'Commercial & Workspaces',
-    quote: 'Speech privacy engineering, room reverberation tuning, and facade noise control for corporate headquarters, open-plan workspaces, confidential meeting rooms, and modern tenant fit-outs.',
-    src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
+    name: 'Commercial',
+    title: 'Commercial',
+    quote: 'Office buildings, Corporate headquarters, Business centres, Retail developments, Commercial buildings, and Corporate facilities.',
+    src: '/assets/Commercial.png',
   },
   {
     name: 'Entertainment & Public Buildings',
     title: 'Entertainment & Public Buildings',
-    quote: 'Room acoustic shaping, tailored acoustic absorption, and building envelope sound isolation designed specifically for auditoriums, cinemas, theatres, public libraries, and civic assembly spaces.',
-    src: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&w=1200&q=80',
+    quote: 'Cinemas, Auditoriums, Theatres, Multipurpose halls, Conference facilities, Schools, Universities, and Worship spaces.',
+    src: '/assets/Entertainment & Public Buildings.png',
   },
   {
     name: 'Infrastructure & Specialised Facilities',
     title: 'Infrastructure & Specialised Facilities',
-    quote: 'Industrial noise mitigation, heavy MEP structural vibration isolation, and precision acoustic testing for hospital wards, data centres, transport interchanges, and testing laboratories.',
-    src: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+    quote: 'Hospitals and healthcare facilities, Data centres, Transportation facilities, Industrial buildings, Utility facilities, Mechanical plant rooms, Energy facilities, and Infrastructure developments.',
+    src: '/assets/Infrastructure & Specialised Facilities.png',
   },
 ];
 
@@ -117,77 +113,41 @@ const whyNexoraItems = [
   {
     number: '[ 01 ]',
     title: 'Specialised acoustic engineering expertise',
-    body: 'Focused technical knowledge across architectural and mechanical acoustics.',
+    body: 'Specialised acoustic engineering expertise',
   },
   {
     number: '[ 02 ]',
-    title: 'Performance-driven acoustic design',
-    body: 'Evidence-based design ensuring compliance, comfort, and operational excellence.',
+    title: 'Architectural and Mechanical acoustic solutions',
+    body: 'Architectural and Mechanical acoustic solutions under one roof',
   },
   {
     number: '[ 03 ]',
-    title: 'Practical, cost-effective solutions',
-    body: 'Solutions selected to balance acoustic performance, constructability, and project cost.',
+    title: 'Practical and cost-effective noise control',
+    body: 'Practical and cost-effective noise control strategies',
   },
   {
     number: '[ 04 ]',
-    title: 'Detailed technical analysis',
-    body: 'Acoustic calculations, assessments, reports, and design recommendations.',
+    title: 'Detailed acoustic calculations',
+    body: 'Detailed acoustic calculations and technical reports',
   },
   {
     number: '[ 05 ]',
     title: 'International acoustic standards',
-    body: 'Solutions developed with applicable project criteria and recognized standards in mind.',
+    body: 'Solutions aligned with international acoustic standards',
   },
   {
     number: '[ 06 ]',
-    title: 'Project-focused collaboration',
-    body: 'Close coordination with architects, engineers, contractors, developers, and owners.',
+    title: 'Strong collaboration',
+    body: 'Strong collaboration with architects, engineers, and contractors',
+  },
+  {
+    number: '[ 07 ]',
+    title: 'Project-focused approach',
+    body: 'Project-focused approach from concept design to completion',
   },
 ];
 
-const processItems = [
-  {
-    text: 'UNDERSTAND',
-    title: 'Understand',
-    number: '01',
-    summary: 'Set goals and constraints.',
-    description: 'Statutory acoustic criteria, architectural intentions, privacy thresholds, and noise baselines.',
-    deliverables: 'Acoustic brief · Benchmark targets',
-  },
-  {
-    text: 'ANALYSE',
-    title: 'Analyse',
-    number: '02',
-    summary: 'Study sources and paths.',
-    description: '3D ray tracing, computational reverberation (RT60), transmission loss, and HVAC paths.',
-    deliverables: '3D ray models · RT60 simulations',
-  },
-  {
-    text: 'ENGINEER',
-    title: 'Engineer',
-    number: '03',
-    summary: 'Build the right strategy.',
-    description: 'Bespoke partition buildups, floating floors, timber absorption baffles, and attenuators.',
-    deliverables: 'Partition schedules · Material specs',
-  },
-  {
-    text: 'COORDINATE',
-    title: 'Coordinate',
-    number: '04',
-    summary: 'Integrate with the design.',
-    description: 'Cross-disciplinary detailing with architects, MEP consultants, and contractors.',
-    deliverables: 'BIM integration · Flanking detailing',
-  },
-  {
-    text: 'VERIFY',
-    title: 'Verify',
-    number: '05',
-    summary: 'Measure the result.',
-    description: 'On-site precision commissioning for sound insulation (DnTw) and background noise (NC/NR).',
-    deliverables: 'Insulation testing · RT60 verification',
-  },
-];
+const processItems: any[] = [];
 
 function Reveal({ children, className = '', delay = '' }: { children: ReactNode; className?: string; delay?: string }) {
   const [visible, setVisible] = useState(false);
@@ -247,7 +207,7 @@ function Nav() {
     });
     return () => { window.removeEventListener('scroll', onScroll); observers.forEach((observer) => observer?.disconnect()); };
   }, []);
-  const links = [['home', 'Home'], ['about', 'About'], ['services', 'Services'], ['sectors', 'Sectors'], ['process', 'Process'], ['why-nexora', 'Why Nexora'], ['contact', 'Contact']];
+  const links = [['home', 'Home'], ['about', 'About'], ['services', 'Services'], ['sectors', 'Sectors'], ['why-nexora', 'Why Nexora'], ['contact', 'Contact']];
   return (
     <>
       <header className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${scrolled ? 'bg-[hsl(var(--background)/75%)] backdrop-blur-xl border-b border-[hsl(var(--border)/40%)] shadow-sm' : 'bg-transparent border-b border-transparent'}`}>
@@ -333,8 +293,8 @@ function Hero() {
     <div className="container-nx relative z-10 w-full pt-6 pb-12 sm:pt-8 sm:pb-16 lg:pt-10 lg:pb-16">
       <div className="grid lg:grid-cols-12 gap-8 xl:gap-12 items-start">
         <div className="lg:col-span-6 xl:col-span-5 pr-0 relative">
-          <Reveal delay="reveal-delay-1"><KineticText as="h1" className="display text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.05] tracking-[-0.02em] [font-optical-sizing:auto]" data-testid="heading-hero">Creating better<br />spaces through<br />acoustic<br />excellence.</KineticText></Reveal>
-          <Reveal delay="reveal-delay-2"><p className="mt-5 sm:mt-6 max-w-[480px] text-[1.05rem] leading-relaxed text-[hsl(var(--muted-foreground))]">Engineering-driven acoustic solutions for quieter, better-performing spaces.</p></Reveal>
+          <Reveal delay="reveal-delay-1"><KineticText as="h1" className="display text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.05] tracking-[-0.02em] [font-optical-sizing:auto]" data-testid="heading-hero">Creating Better<br />Spaces Through<br />Acoustic<br />Excellence.</KineticText></Reveal>
+          <Reveal delay="reveal-delay-2"><p className="mt-5 sm:mt-6 max-w-[480px] text-[1.05rem] leading-relaxed text-[hsl(var(--muted-foreground))]">Engineering-driven acoustic solutions for better-performing buildings, quieter environments, and exceptional occupant comfort.</p></Reveal>
           <Reveal delay="reveal-delay-3"><div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4"><ArrowFillButton href="#contact" variant="primary" size="default" data-testid="link-hero-contact" btnText="Discuss your project" /></div></Reveal>
           <div className="mt-8 hidden items-center gap-3 lg:flex"><span className="mono text-[.6rem] text-[hsl(var(--muted-foreground))]">Scroll to explore</span><span className="h-px w-14 bg-[hsl(var(--border))]" /></div>
 
@@ -374,131 +334,327 @@ function Intro() {
   );
 }
 
-function Services() {
+function V2Card({ service }: { service: any }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const isHovered = useMotionValue(0);
+
+  const springConfig = { stiffness: 300, damping: 30 };
+  const mouseXSpring = useSpring(x, springConfig);
+  const mouseYSpring = useSpring(y, springConfig);
+  const hoverSpring = useSpring(isHovered, { stiffness: 200, damping: 20 });
+
+  // Pan the image slightly in opposite direction of mouse
+  const translateX = useTransform(mouseXSpring, [-0.5, 0.5], ["-12px", "12px"]);
+  const translateY = useTransform(mouseYSpring, [-0.5, 0.5], ["-12px", "12px"]);
+  
+  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
+  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
+  
+  // Scale the container slightly on hover
+  const scale = useTransform(hoverSpring, [0, 1], [1, 1.02]);
+  
+  // Hover drop shadow
+  const shadowY = useTransform(hoverSpring, [0, 1], ["5px", "20px"]);
+  const shadowBlur = useTransform(hoverSpring, [0, 1], ["15px", "40px"]);
+  const shadowOpacity = useTransform(hoverSpring, [0, 1], [0.05, 0.2]);
+  const boxShadow = useMotionTemplate`0 ${shadowY} ${shadowBlur} rgba(0,0,0,${shadowOpacity})`;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
   return (
-    <section id="services" className="relative border-b border-[hsl(var(--border))] py-12 md:py-16 overflow-hidden">
-      {/* Circular Split Roll: One side heading, the other side a box with details */}
-      <div className="w-full">
-        <CircularSplitRoll
-          items={services}
-          radius={380}
-          cardWidth={370}
-          cardHeight={270}
-          sectionHeight={70}
-          titleSize="clamp(1.85rem, 3.2vw, 3.15rem)"
-          columnSpreadVw={3.5}
-          columnOffsetPx={420}
-          className="w-full"
+    <motion.div
+      className="service-v2-card relative rounded-3xl overflow-hidden bg-[hsl(var(--muted)/20%)] border border-[hsl(var(--border)/40%)] cursor-pointer h-full flex items-center justify-center p-0"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => isHovered.set(1)}
+      onMouseLeave={() => {
+        isHovered.set(0);
+        x.set(0);
+        y.set(0);
+      }}
+      style={{ scale, boxShadow }}
+    >
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+        {/* We make the image slightly larger so it can pan without showing edges */}
+        <motion.img 
+          src={service.image} 
+          alt={service.title} 
+          className="w-[106%] max-w-[106%] h-[106%] object-contain"
+          style={{ x: translateX, y: translateY }}
         />
+      </div>
+
+      {/* Dynamic Shine Effect */}
+      <motion.div 
+        className="pointer-events-none absolute inset-0 z-10 rounded-3xl mix-blend-overlay"
+        style={{
+          opacity: hoverSpring,
+          background: useMotionTemplate`radial-gradient(circle at ${glareX} ${glareY}, rgba(255,255,255,0.4) 0%, transparent 60%)`,
+        }}
+      />
+    </motion.div>
+  );
+}
+
+function ServicesV2() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      // Elegant Staggered 3D Reveal on scroll
+      gsap.fromTo('.service-v2-card', 
+        { y: 100, opacity: 0, scale: 0.95, rotationY: 8, rotationX: 4 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          rotationY: 0,
+          rotationX: 0,
+          duration: 1.2,
+          stagger: 0.15,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 85%",
+          }
+        }
+      );
+    }, containerRef);
+    
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="grid md:grid-cols-2 gap-6 lg:gap-10 mt-12 w-full max-w-6xl mx-auto" style={{ perspective: "1200px" }}>
+      {services.map((service, index) => (
+        <V2Card key={service.id} service={service} />
+      ))}
+    </div>
+  );
+}
+
+function V3Card({ service }: { service: any }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const isHovered = useMotionValue(0);
+
+  const springConfig = { stiffness: 300, damping: 30 };
+  const mouseXSpring = useSpring(x, springConfig);
+  const mouseYSpring = useSpring(y, springConfig);
+  const hoverSpring = useSpring(isHovered, { stiffness: 200, damping: 20 });
+
+  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
+  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
+  
+  // Scale the container slightly on hover
+  const scale = useTransform(hoverSpring, [0, 1], [1, 1.02]);
+  
+  // Hover drop shadow
+  const shadowY = useTransform(hoverSpring, [0, 1], ["5px", "20px"]);
+  const shadowBlur = useTransform(hoverSpring, [0, 1], ["15px", "40px"]);
+  const shadowOpacity = useTransform(hoverSpring, [0, 1], [0.05, 0.2]);
+  const boxShadow = useMotionTemplate`0 ${shadowY} ${shadowBlur} rgba(0,0,0,${shadowOpacity})`;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  return (
+    <motion.div
+      className="service-v2-card relative rounded-3xl overflow-hidden bg-[hsl(var(--muted)/20%)] border border-[hsl(var(--border)/40%)] cursor-pointer h-full flex items-center justify-center p-0"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => isHovered.set(1)}
+      onMouseLeave={() => {
+        isHovered.set(0);
+        x.set(0);
+        y.set(0);
+      }}
+      style={{ scale, boxShadow }}
+    >
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+        <motion.img 
+          src={service.image} 
+          alt={service.title} 
+          className="w-full h-auto object-contain"
+        />
+      </div>
+
+      {/* Dynamic Shine Effect */}
+      <motion.div 
+        className="pointer-events-none absolute inset-0 z-10 rounded-3xl mix-blend-overlay"
+        style={{
+          opacity: hoverSpring,
+          background: useMotionTemplate`radial-gradient(circle at ${glareX} ${glareY}, rgba(255,255,255,0.4) 0%, transparent 60%)`,
+        }}
+      />
+    </motion.div>
+  );
+}
+
+function ServicesV3() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      // Standard Staggered Reveal on scroll
+      gsap.fromTo('.service-v2-card', 
+        { y: 80, opacity: 0, scale: 0.95 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 85%",
+          }
+        }
+      );
+    }, containerRef);
+    
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="grid md:grid-cols-2 gap-6 lg:gap-10 mt-12 w-full max-w-6xl mx-auto">
+      {services.map((service, index) => (
+        <V3Card key={service.id} service={service} />
+      ))}
+    </div>
+  );
+}
+
+function Services() {
+  const [version, setVersion] = useState<'v1' | 'v2' | 'v3'>('v3');
+
+  return (
+    <section id="services" className="relative border-b border-[hsl(var(--border))] py-20 md:py-28 overflow-hidden bg-[hsl(var(--background))]">
+      <div className="container-nx">
+        <Reveal>
+          <div className="mb-16 md:flex justify-between items-end">
+            <div>
+              <span className="mono text-[.64rem] tracking-[.2em] uppercase text-[hsl(var(--accent))]">
+                Our Services
+              </span>
+              <h2 className="display mt-3 max-w-[680px] text-[clamp(1.85rem,3.2vw,3.15rem)] leading-[1.08] tracking-[-0.02em]">
+                Engineering-driven<br />acoustic solutions.
+              </h2>
+            </div>
+            <div className="mt-6 md:mt-0 flex flex-col items-start md:items-end gap-5">
+              <p className="max-w-[400px] text-[1.05rem] leading-7 text-[hsl(var(--muted-foreground))]">
+                Comprehensive acoustic design, analysis, and testing for better-performing environments.
+              </p>
+              
+              {/* V1 / V2 / V3 Toggle Button */}
+              <div className="flex flex-wrap items-center gap-1 bg-[hsl(var(--muted))] p-1 rounded-full border border-[hsl(var(--border))]">
+                <button 
+                  onClick={() => setVersion('v1')} 
+                  className={cn("px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase transition-all duration-300", version === 'v1' ? "bg-[hsl(var(--foreground))] text-[hsl(var(--background))] shadow-sm" : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]")}
+                >
+                  V1
+                </button>
+                <button 
+                  onClick={() => setVersion('v2')} 
+                  className={cn("px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase transition-all duration-300", version === 'v2' ? "bg-[hsl(var(--foreground))] text-[hsl(var(--background))] shadow-sm" : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]")}
+                >
+                  V2
+                </button>
+                <button 
+                  onClick={() => setVersion('v3')} 
+                  className={cn("px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase transition-all duration-300", version === 'v3' ? "bg-[hsl(var(--foreground))] text-[hsl(var(--background))] shadow-sm" : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]")}
+                >
+                  V3
+                </button>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {version === 'v1' ? (
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-10 perspective-1000" style={{ perspective: "1000px" }}>
+            {services.map((service, index) => (
+              <Reveal key={service.id} delay={`reveal-delay-${(index % 2) + 1}`}>
+                <TiltCard className="group relative rounded-3xl overflow-hidden bg-transparent border border-[hsl(var(--border))] hover:border-[hsl(var(--accent))] transition-colors duration-500 cursor-pointer shadow-lg hover:shadow-2xl">
+                  {/* Image that zooms slightly on hover */}
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <img src={service.image} alt={service.title} className="w-full h-auto object-contain transition-transform duration-[800ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.05]" />
+                  </div>
+
+                  {/* Custom Pointer on hover */}
+                  <Pointer>
+                    <motion.div 
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--accent))] text-white shadow-[0_4px_16px_hsl(var(--accent)/0.5)] backdrop-blur-xl border border-white/20"
+                      animate={{ scale: [1, 1.1, 1], y: [0, -2, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      style={{ transform: "translateZ(60px)" }}
+                    >
+                      <Sparkles className="h-4 w-4 fill-white/80" />
+                    </motion.div>
+                  </Pointer>
+                </TiltCard>
+              </Reveal>
+            ))}
+          </div>
+        ) : version === 'v2' ? (
+          <ServicesV2 />
+        ) : (
+          <ServicesV3 />
+        )}
       </div>
     </section>
   );
 }
 
 function Sectors() {
-  return <section id="sectors" className="py-20 md:py-28">
-    <div className="container-nx">
-      <div>
-        <AnimatedTestimonials
-          testimonials={sectors}
-          autoplay={false}
-          themeAware={true}
-          className="w-full px-0 py-6 font-sans antialiased"
-        />
-      </div>
-    </div>
-  </section>;
-}
-
-function Process() {
-  const [activeStep, setActiveStep] = useState<number | null>(null);
+  const slides = sectors.map((sector) => ({
+    image: sector.src,
+    title: sector.title,
+    description: sector.quote,
+    badge: sector.name,
+  }));
 
   return (
-    <section id="process" className="relative border-b border-[hsl(var(--border))] py-20 md:py-28 lg:py-32 overflow-hidden">
+    <section id="sectors" className="py-20 md:py-28 overflow-hidden">
       <div className="container-nx">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8 xl:gap-14">
-          {/* Left Column: Heading, Description & Stage Selectors */}
-          <div className="lg:col-span-5 flex flex-col justify-center">
-            <Reveal>
-              <h2 className="display text-[clamp(1.85rem,3.2vw,3.15rem)] leading-[1.08] tracking-[-0.02em]">
-                Our methodology.
-              </h2>
-              <p className="mt-6 text-[1.02rem] sm:text-[1.08rem] leading-7 text-[hsl(var(--muted-foreground))] max-w-[480px]">
-                From initial acoustic benchmarking to final on-site verification, explore each phase of our structured process around the circular dial.
-              </p>
-            </Reveal>
-
-            {/* Quick Stage Selector Bar for Touch and Desktop Navigation */}
-            <Reveal delay="reveal-delay-2" className="mt-8 sm:mt-10">
-              <div className="flex flex-wrap items-center gap-2">
-                {processItems.map((step, idx) => {
-                  const isActive = activeStep === idx;
-                  return (
-                    <button
-                      key={step.number}
-                      type="button"
-                      onMouseEnter={() => setActiveStep(idx)}
-                      onClick={() => setActiveStep(activeStep === idx ? null : idx)}
-                      className={cn(
-                        "mono px-3 py-1.5 text-[0.68rem] sm:text-xs transition-all duration-200 border cursor-pointer",
-                        isActive
-                          ? "border-[hsl(var(--accent))] bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] font-bold shadow-sm"
-                          : "border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--muted-foreground))] hover:border-[hsl(var(--foreground)/0.4)] hover:text-[hsl(var(--foreground))]"
-                      )}
-                      aria-label={`Select stage ${step.number} ${step.title}`}
-                    >
-                      <span className="opacity-75 mr-1.5">{step.number}</span>
-                      <span>{step.title}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <p className="mono mt-5 text-[0.62rem] uppercase tracking-widest text-[hsl(var(--muted-foreground))]">
-                {activeStep !== null
-                  ? `Active: Stage ${processItems[activeStep].number} — ${processItems[activeStep].title}`
-                  : "Interactive Dial · Hover or click a stage"}
-              </p>
-            </Reveal>
+        <Reveal>
+          <div className="text-center md:text-left mb-6">
+            <span className="mono text-[.64rem] tracking-[.2em] uppercase text-[hsl(var(--accent))]">
+              Our Projects
+            </span>
+            <h2 className="display mt-3 text-[clamp(1.85rem,3.2vw,3.15rem)] leading-[1.08] tracking-[-0.02em]">
+              Sectors we serve.
+            </h2>
           </div>
-
-          {/* Right Column: Circular Methodology Dial */}
-          <div className="lg:col-span-7 flex items-center justify-center lg:justify-end">
-            <Reveal delay="reveal-delay-2" className="w-full flex items-center justify-center lg:justify-end">
-              <div className="relative flex items-center justify-center p-2 sm:p-4">
-                <CircularRevealHeading
-                  items={processItems}
-                  activeItem={activeStep}
-                  onActiveChange={setActiveStep}
-                  size="xl"
-                  mode="text"
-                  variant="theme"
-                  centerText={
-                    <div className="flex flex-col items-center justify-center p-2 select-none">
-                      <span className="mono text-[0.55rem] sm:text-[0.62rem] tracking-[0.24em] uppercase text-[hsl(var(--accent))] mb-1 font-semibold">
-                        Methodology
-                      </span>
-                      <span className="display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[hsl(var(--foreground))]">
-                        Our Process
-                      </span>
-                      <p className="mt-2 text-[0.66rem] sm:text-[0.74rem] text-[hsl(var(--muted-foreground))] max-w-[240px] leading-relaxed">
-                        Hover each stage along the circumference to inspect details.
-                      </p>
-                      <div className="mt-3 flex items-center gap-1.5 mono text-[0.52rem] sm:text-[0.58rem] text-[hsl(var(--accent))] uppercase tracking-widest">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--accent))] animate-pulse" />
-                        5 Interactive Stages
-                      </div>
-                    </div>
-                  }
-                />
-              </div>
-            </Reveal>
-          </div>
-        </div>
+        </Reveal>
+        
+        <Reveal delay="reveal-delay-1">
+          <CarouselStacked slides={slides} />
+        </Reveal>
       </div>
     </section>
   );
 }
+
 
 function WhyNexora() {
   return (
@@ -520,15 +676,18 @@ function WhyNexora() {
 
         <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 grid-border-t grid-border-l">
           {whyNexoraItems.map((item, index) => (
-            <Reveal key={item.number} delay={`reveal-delay-${(index % 3) + 1}`} className="h-full">
+            <Reveal key={item.number} delay={`reveal-delay-${(index % 3) + 1}`} className={cn("h-full", index === 6 && "md:col-span-2 lg:col-span-3")}>
               <article
-                className="group relative flex h-full flex-col justify-between grid-border-b grid-border-r bg-[hsl(var(--background)/40%)] p-8 sm:p-10 transition-all duration-300 ease-out hover:bg-[hsl(var(--card))] cursor-default overflow-hidden"
+                className={cn(
+                  "group relative flex h-full flex-col justify-between grid-border-b grid-border-r bg-[hsl(var(--background)/40%)] p-8 sm:p-10 transition-all duration-300 ease-out hover:bg-[hsl(var(--card))] cursor-default overflow-hidden",
+                  index === 6 && "lg:flex-row lg:items-center lg:gap-8"
+                )}
                 data-testid={`why-nexora-card-${item.number}`}
               >
                 {/* Subtle top indicator on hover */}
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-[hsl(var(--accent))] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                <div>
+                <div className={cn(index === 6 && "lg:w-1/2")}>
                   <div className="flex items-center justify-between mb-8">
                     <span className="mono text-[.65rem] font-semibold tracking-[0.2em] text-[hsl(var(--muted-foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--accent))]">
                       {item.number}
@@ -539,8 +698,10 @@ function WhyNexora() {
                   <h3 className="display text-xl sm:text-[1.35rem] leading-[1.25] text-[hsl(var(--foreground))] transition-colors duration-200">
                     {item.title}
                   </h3>
+                </div>
 
-                  <p className="mt-4 text-[0.92rem] sm:text-[0.98rem] leading-relaxed text-[hsl(var(--muted-foreground))]">
+                <div className={cn(index === 6 ? "lg:w-1/2 lg:mt-0" : "mt-4")}>
+                  <p className="text-[0.92rem] sm:text-[0.98rem] leading-relaxed text-[hsl(var(--muted-foreground))]">
                     {item.body}
                   </p>
                 </div>
@@ -585,8 +746,8 @@ function Contact() {
         <div className="grid gap-16 lg:grid-cols-[.8fr_1.2fr]">
           <div>
             <Reveal>
-              <h2 className="display text-[clamp(1.85rem,3.2vw,3.15rem)] leading-[1.08] tracking-[-0.02em]">Let's create<br />better acoustic<br />environments.</h2>
-              <p className="mt-9 max-w-[440px] leading-7 text-[hsl(var(--primary-foreground)/.68)]">Design, assessment, noise control, or testing—we can help.</p>
+              <h2 className="display text-[clamp(1.85rem,3.2vw,3.15rem)] leading-[1.08] tracking-[-0.02em]">Let's Create<br />Better Acoustic<br />Environments</h2>
+              <p className="mt-9 max-w-[440px] leading-7 text-[hsl(var(--primary-foreground)/.68)]">Whether you require acoustic design, noise control solutions, acoustic assessment, or testing services, Nexora Acoustic Engineering Services is ready to support your project.</p>
               <div className="mt-12 border-t border-[hsl(var(--primary-foreground)/.18)] pt-6">
                 <p className="mono text-[.62rem] text-[hsl(var(--accent))]">What can we help with?</p>
                 <p className="mt-4 max-w-[400px] text-[.9rem] leading-7 text-[hsl(var(--primary-foreground)/.66)]">Design  ·  HVAC  ·  Noise  ·  Vibration  ·  Testing  ·  Sound insulation</p>
@@ -719,7 +880,6 @@ function Footer() {
               <div className="flex flex-col gap-3 text-[.85rem] font-medium text-[hsl(var(--foreground))]">
                 <a href="#about" className="hover:text-[hsl(var(--accent))] transition-colors">About</a>
                 <a href="#sectors" className="hover:text-[hsl(var(--accent))] transition-colors">Sectors</a>
-                <a href="#process" className="hover:text-[hsl(var(--accent))] transition-colors">Process</a>
                 <a href="#contact" className="hover:text-[hsl(var(--accent))] transition-colors">Contact</a>
               </div>
             </div>
@@ -823,7 +983,7 @@ function Home() {
     <div className="grain nexora-page min-h-[100dvh]">
       <InteractiveBackground />
       <Nav />
-      <main className="relative z-10"><Hero /><Intro /><Services /><Sectors /><Process /><WhyNexora /><Contact /></main>
+      <main className="relative z-10"><Hero /><Intro /><Services /><Sectors /><WhyNexora /><Contact /></main>
       <Footer />
     </div>
   );

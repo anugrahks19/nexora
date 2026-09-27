@@ -111,7 +111,7 @@ const services = [
       'Background noise measurement',
       'Room acoustic assessment'
     ],
-    pointerColor: '#7a6673'
+    pointerColor: '#000000' // Black
   }
 ];
 
@@ -376,58 +376,7 @@ function Intro() {
 import LiquidGlassCursor from '@/components/ui/liquid-glass-cursor';
 import { useMousePosition } from '@/components/hooks/use-mouse-position';
 
-function V2GlassServices() {
-  return (
-    <LiquidGlassCursor className="w-full rounded-3xl" size={150} magnification={1.15} bgColor="transparent">
-       <div className="grid md:grid-cols-2 gap-6 lg:gap-10 p-4">
-          {services.map(service => (
-            <div key={service.id} className="relative rounded-3xl overflow-hidden bg-transparent border border-[hsl(var(--border))] shadow-lg flex items-center justify-center aspect-video w-full" data-cursor="button">
-               <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
-               <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-6">
-                 <h3 className="text-white font-bold text-2xl font-serif" data-cursor="text">{service.title}</h3>
-                 <p className="text-white/80 mt-2 text-sm">{service.sub}</p>
-               </div>
-            </div>
-          ))}
-       </div>
-    </LiquidGlassCursor>
-  );
-}
-
-function V3InteractiveCard({ service }: { service: any }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mousePos = useMousePosition(containerRef);
-  
-  return (
-    <div ref={containerRef} className="relative rounded-3xl overflow-hidden border border-[hsl(var(--border))] aspect-video w-full group cursor-pointer">
-       <div className="absolute inset-0 z-0 bg-muted">
-         <img src={service.image} className="w-full h-full object-cover opacity-60 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100" />
-       </div>
-       <div 
-         className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100 mix-blend-overlay"
-         style={{
-           background: `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, ${service.pointerColor || 'rgba(255,255,255,1)'}, transparent 80%)`
-         }}
-       />
-       <div className="absolute inset-0 z-20 flex flex-col justify-end p-6 pointer-events-none bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <h3 className="text-white font-bold font-serif text-2xl drop-shadow-md">{service.title}</h3>
-          <p className="text-white/80 mt-1 text-sm">{service.sub}</p>
-       </div>
-    </div>
-  )
-}
-
-function V3Services() {
-  return (
-    <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
-      {services.map(service => <V3InteractiveCard key={service.id} service={service} />)}
-    </div>
-  )
-}
-
 function Services() {
-  const [version, setVersion] = useState<'v1' | 'v2' | 'v3'>('v1');
-
   return (
     <section id="services" className="relative border-b border-[hsl(var(--border))] py-20 md:py-28 overflow-hidden bg-[hsl(var(--background))]">
       <div className="container-nx">
@@ -442,11 +391,6 @@ function Services() {
               </h2>
             </div>
             <div className="mt-6 md:mt-0 flex flex-col items-start md:items-end gap-5">
-              <div className="flex bg-[hsl(var(--muted))] p-1 rounded-full border border-[hsl(var(--border))]">
-                <button onClick={() => setVersion('v1')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${version === 'v1' ? 'bg-[hsl(var(--background))] shadow-sm' : 'text-muted-foreground'}`}>V1 (Dots)</button>
-                <button onClick={() => setVersion('v2')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${version === 'v2' ? 'bg-[hsl(var(--background))] shadow-sm' : 'text-muted-foreground'}`}>V2 (Lens)</button>
-                <button onClick={() => setVersion('v3')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${version === 'v3' ? 'bg-[hsl(var(--background))] shadow-sm' : 'text-muted-foreground'}`}>V3 (Glow)</button>
-              </div>
               <p className="max-w-[400px] text-[1.05rem] leading-7 text-[hsl(var(--muted-foreground))]">
                 Comprehensive acoustic design, analysis, and testing for better-performing environments.
               </p>
@@ -454,27 +398,13 @@ function Services() {
           </div>
         </Reveal>
 
-        {version === 'v1' && (
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-10 perspective-1000" style={{ perspective: "1000px" }}>
-            {services.map((service, index) => (
-              <Reveal key={service.id} delay={`reveal-delay-${(index % 2) + 1}`}>
-                <V3AccordionCard service={service} />
-              </Reveal>
-            ))}
-          </div>
-        )}
-        
-        {version === 'v2' && (
-          <Reveal>
-            <V2GlassServices />
-          </Reveal>
-        )}
-
-        {version === 'v3' && (
-          <Reveal>
-            <V3Services />
-          </Reveal>
-        )}
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-10 perspective-1000" style={{ perspective: "1000px" }}>
+          {services.map((service, index) => (
+            <Reveal key={service.id} delay={`reveal-delay-${(index % 2) + 1}`}>
+              <V3AccordionCard service={service} />
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

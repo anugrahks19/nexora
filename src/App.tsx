@@ -876,7 +876,10 @@ function Contact() {
 function Footer() {
   return (
     <footer className="relative flex flex-col items-center justify-center overflow-hidden bg-[hsl(var(--primary))] pt-24 md:pt-32 pb-0 text-[hsl(var(--primary-foreground))]">
-      <div className="container-nx relative z-10 w-full rounded-[32px] bg-[hsl(var(--background))] p-8 md:pt-10 md:px-12 md:pb-6 text-[hsl(var(--foreground))] mb-24 shadow-[0_40px_100px_rgba(40,30,20,0.25),0_15px_40px_rgba(40,30,20,0.15)]">
+      <div 
+        className="container-nx relative z-10 w-full rounded-[32px] bg-[hsl(var(--background))] p-8 md:pt-10 md:px-12 md:pb-6 text-[hsl(var(--foreground))] shadow-[0_40px_100px_rgba(40,30,20,0.25),0_15px_40px_rgba(40,30,20,0.15)]"
+        style={{ marginBottom: 'clamp(40px, 10vw, 250px)' }}
+      >
         
         {/* Top CTA Banner */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-10 mb-10 border-b border-[hsl(var(--border))]">
@@ -940,9 +943,9 @@ function Footer() {
         </div>
       </div>
       
-      <div className="absolute bottom-[-30px] md:bottom-[-90px] left-1/2 -translate-x-1/2 pointer-events-none flex select-none justify-center z-0">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none flex select-none justify-center z-0">
         <span 
-          className="whitespace-nowrap font-bold tracking-[-0.06em] text-[hsl(var(--primary-foreground)/.15)]" 
+          className="whitespace-nowrap font-bold tracking-[-0.06em] leading-none text-[hsl(var(--primary-foreground)/.15)]" 
           style={{ fontSize: 'clamp(80px, 20vw, 500px)', fontFamily: 'var(--app-font-heading)' }}
         >
           NEXORA

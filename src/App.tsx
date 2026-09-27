@@ -348,7 +348,7 @@ function Hero() {
         </div>
         
         {/* Desktop right-aligned image as a rounded floating card */}
-        <div className="hidden lg:block lg:col-span-6 xl:col-span-6 relative h-[55vh] min-h-[450px] max-h-[700px] mt-6 lg:mt-10 xl:mt-14 -ml-4 -mr-4 lg:-ml-8 lg:-mr-6 xl:-ml-10 xl:-mr-8 rounded-[2rem] overflow-hidden shadow-[0_40px_100px_rgba(40,30,20,0.15)] bg-transparent">
+        <div className="hidden lg:block lg:col-span-6 xl:col-span-6 relative h-[55vh] min-h-[450px] max-h-[700px] mt-6 lg:mt-10 xl:mt-14 -ml-4 -mr-4 lg:-ml-8 lg:-mr-6 xl:-ml-10 xl:-mr-8 rounded-[2rem] overflow-hidden bg-transparent">
           <img src={auditorium} alt="World-class acoustic auditorium" className="hero-image cinematic-img h-full w-full object-cover object-center scale-[1.01]" referrerPolicy="no-referrer" data-testid="img-hero-auditorium" />
           <div className="absolute bottom-6 right-6 flex items-center gap-3 bg-[hsl(var(--background)/92%)] backdrop-blur-md px-4 py-2 rounded-xl border border-[hsl(var(--border))] text-[hsl(var(--foreground))] shadow-md">
             <span className="h-2 w-2 rounded-full bg-[hsl(var(--accent))]" />

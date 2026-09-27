@@ -1031,7 +1031,9 @@ function InteractiveBackground() {
       <div 
         className={`absolute inset-0 transition-opacity duration-1000 ${isMobile ? "opacity-40" : "opacity-100"}`}
         style={{
-          backgroundSize: '320px 320px, 320px 320px, 80px 80px, 80px 80px',
+          backgroundSize: isMobile 
+            ? '120px 120px, 120px 120px, 30px 30px, 30px 30px'
+            : '320px 320px, 320px 320px, 80px 80px, 80px 80px',
           backgroundImage: `
             linear-gradient(to right, hsl(var(--foreground)/0.15) 1px, transparent 1px), 
             linear-gradient(to bottom, hsl(var(--foreground)/0.15) 1px, transparent 1px),

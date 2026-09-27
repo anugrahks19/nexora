@@ -23,7 +23,7 @@ import { TiltCard } from '@/components/ui/tilt-card';
 import { cn } from '@/lib/utils';
 import { V3AccordionCard } from '@/components/ui/services-versions';
 const queryClient = new QueryClient();
-const auditorium = '/assets/nexora-acoustic-hero.jpg';
+const auditorium = '/assets/nexora-acoustic-hero.webp';
 
 const services = [
   {
@@ -35,7 +35,7 @@ const services = [
     body: 'Acoustic design solutions that improve sound quality, privacy, and occupant comfort.',
     description: 'Acoustic design solutions that improve sound quality, privacy, and occupant comfort.',
     tags: 'Room acoustic design  •  Reverberation control  •  Sound insulation design  •  Airborne sound insulation  •  Impact sound insulation  •  Façade acoustic assessment',
-    image: '/assets/Architectural Acoustics.png',
+    image: '/assets/Architectural Acoustics.webp',
     badge: 'Building Design',
     list: [
       'Room acoustic design',
@@ -55,7 +55,7 @@ const services = [
     body: 'Noise and vibration solutions for building services and mechanical equipment.',
     description: 'Noise and vibration solutions for building services and mechanical equipment.',
     tags: 'HVAC acoustic assessment  •  AHU, FAHU and FCU noise assessment  •  Chiller noise assessment  •  Cooling tower noise assessment  •  Generator room acoustic assessment',
-    image: '/assets/Mechanical Acoustics.png',
+    image: '/assets/Mechanical Acoustics.webp',
     badge: 'MEP Engineering',
     list: [
       'HVAC acoustic assessment',
@@ -80,7 +80,7 @@ const services = [
     body: 'Engineering solutions to identify, assess, and control unwanted noise.',
     description: 'Engineering solutions to identify, assess, and control unwanted noise.',
     tags: 'Environmental noise assessment  •  Noise impact studies  •  Noise prediction  •  Noise mitigation  •  Sound transmission analysis',
-    image: '/assets/Noise & Vibration control.png',
+    image: '/assets/Noise & Vibration control.webp',
     badge: 'Environmental & Site',
     list: [
       'Environmental noise assessment',
@@ -99,7 +99,7 @@ const services = [
     body: 'Professional on-site measurements to assess and verify acoustic performance.',
     description: 'Professional on-site measurements to assess and verify acoustic performance.',
     tags: 'Environmental noise surveys  •  Sound insulation testing  •  Reverberation time  •  Background noise measurement  •  Room acoustic assessment',
-    image: '/assets/Acoustic testing.png',
+    image: '/assets/Acoustic testing.webp',
     badge: 'Commissioning',
     list: [
       'Environmental noise surveys',
@@ -116,31 +116,31 @@ const sectors = [
     name: 'Residential & Mixed-Use',
     title: 'Residential & Mixed-Use',
     quote: 'Residential towers, Apartments, Villas, Luxury residences, Mixed-use developments, and Residential communities.',
-    src: '/assets/Residential & Mixed-Use.png',
+    src: '/assets/Residential & Mixed-Use.webp',
   },
   {
     name: 'Hotels & Hospitality',
     title: 'Hotels & Hospitality',
     quote: 'Hotels, Resorts, Serviced apartments, Restaurants, Hospitality facilities, and Luxury developments.',
-    src: '/assets/Hotels & Hospitality.png',
+    src: '/assets/Hotels & Hospitality.webp',
   },
   {
     name: 'Commercial',
     title: 'Commercial',
     quote: 'Office buildings, Corporate headquarters, Business centres, Retail developments, Commercial buildings, and Corporate facilities.',
-    src: '/assets/Commercial.png',
+    src: '/assets/Commercial.webp',
   },
   {
     name: 'Entertainment & Public Buildings',
     title: 'Entertainment & Public Buildings',
     quote: 'Cinemas, Auditoriums, Theatres, Multipurpose halls, Conference facilities, Schools, Universities, and Worship spaces.',
-    src: '/assets/Entertainment & Public Buildings.png',
+    src: '/assets/Entertainment & Public Buildings.webp',
   },
   {
     name: 'Infrastructure & Specialised Facilities',
     title: 'Infrastructure & Specialised Facilities',
     quote: 'Hospitals and healthcare facilities, Data centres, Transportation facilities, Industrial buildings, Utility facilities, Mechanical plant rooms, Energy facilities, and Infrastructure developments.',
-    src: '/assets/Infrastructure & Specialised Facilities.png',
+    src: '/assets/Infrastructure & Specialised Facilities.webp',
   },
 ];
 

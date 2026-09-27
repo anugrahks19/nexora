@@ -14,7 +14,7 @@ export function V3AccordionCard({ service }: { service: any }) {
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="relative w-full h-full flex items-center justify-center">
-          <img src={service.image} alt={service.title} className="w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.05]" />
+          <img src={service.image} alt={service.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.05]" />
         </div>
         
         <Pointer>

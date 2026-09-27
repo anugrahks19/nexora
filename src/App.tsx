@@ -878,7 +878,6 @@ function Footer() {
     <footer className="relative flex flex-col items-center justify-center overflow-hidden bg-[hsl(var(--primary))] pt-24 md:pt-32 pb-0 text-[hsl(var(--primary-foreground))]">
       <div 
         className="container-nx relative z-10 w-full rounded-[32px] bg-[hsl(var(--background))] p-8 md:pt-10 md:px-12 md:pb-6 text-[hsl(var(--foreground))] shadow-[0_40px_100px_rgba(40,30,20,0.25),0_15px_40px_rgba(40,30,20,0.15)]"
-        style={{ marginBottom: 'clamp(40px, 10vw, 250px)' }}
       >
         
         {/* Top CTA Banner */}
@@ -943,13 +942,27 @@ function Footer() {
         </div>
       </div>
       
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none flex select-none justify-center z-0">
-        <span 
-          className="whitespace-nowrap font-bold tracking-[-0.06em] leading-none text-[hsl(var(--primary-foreground)/.15)]" 
-          style={{ fontSize: 'clamp(80px, 20vw, 500px)', fontFamily: 'var(--app-font-heading)' }}
-        >
-          NEXORA
-        </span>
+      {/* Spacer precisely exactly 50% of the SVG height (12.5% of container width) */}
+      <div className="container-nx w-full z-0 relative pointer-events-none">
+        <div style={{ paddingBottom: '12.5%' }} />
+      </div>
+      
+      <div className="absolute bottom-0 w-full pointer-events-none flex select-none justify-center z-0">
+        <div className="container-nx w-full relative flex justify-center">
+          <svg className="w-full h-auto text-[hsl(var(--primary-foreground)/.15)] fill-current" viewBox="0 0 1000 250" preserveAspectRatio="xMidYMid meet">
+            <text 
+              x="50%" 
+              y="200" 
+              textAnchor="middle" 
+              textLength="1000" 
+              lengthAdjust="spacing" 
+              className="font-bold uppercase tracking-[-0.02em]" 
+              style={{ fontFamily: 'var(--app-font-heading)', fontSize: '230px' }}
+            >
+              NEXORA
+            </text>
+          </svg>
+        </div>
       </div>
     </footer>
   );

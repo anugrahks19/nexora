@@ -111,7 +111,7 @@ const services = [
       'Background noise measurement',
       'Room acoustic assessment'
     ],
-    pointerColor: '#333333' // Dark grey
+    pointerColor: '#ffffff' // White
   }
 ];
 

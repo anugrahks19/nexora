@@ -19,12 +19,16 @@ export function V3AccordionCard({ service }: { service: any }) {
         
         <Pointer>
           <motion.div 
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--accent))] text-white shadow-[0_4px_16px_hsl(var(--accent)/0.5)] backdrop-blur-xl border border-white/20"
-            animate={{ scale: [1, 1.1, 1], y: [0, -2, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            style={{ transform: "translateZ(60px)" }}
+            className="flex h-16 w-16 items-center justify-center rounded-full text-white backdrop-blur-md border border-white/10"
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            style={{ 
+              backgroundColor: service.pointerColor ? `${service.pointerColor}e6` : 'hsl(var(--accent))',
+              boxShadow: `0 8px 32px ${service.pointerColor ? service.pointerColor + '66' : 'hsl(var(--accent)/0.5)'}`,
+              transform: "translateZ(60px)" 
+            }}
           >
-            <Sparkles className="h-4 w-4 fill-white/80" />
+            <span className="text-[0.6rem] font-bold tracking-widest uppercase">View</span>
           </motion.div>
         </Pointer>
       </TiltCard>

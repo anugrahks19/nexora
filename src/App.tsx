@@ -44,7 +44,8 @@ const services = [
       'Airborne sound insulation',
       'Impact sound insulation',
       'Façade acoustic assessment'
-    ]
+    ],
+    pointerColor: '#bd6a3a'
   },
   {
     id: 2,
@@ -69,7 +70,8 @@ const services = [
       'Duct-borne noise assessment',
       'Breakout noise assessment',
       'Outdoor noise assessment.'
-    ]
+    ],
+    pointerColor: '#4f7285'
   },
   {
     id: 3,
@@ -88,7 +90,8 @@ const services = [
       'Noise prediction',
       'Noise mitigation',
       'Sound transmission analysis'
-    ]
+    ],
+    pointerColor: '#63755c'
   },
   {
     id: 4,
@@ -107,7 +110,8 @@ const services = [
       'Reverberation time',
       'Background noise measurement',
       'Room acoustic assessment'
-    ]
+    ],
+    pointerColor: '#7a6673'
   }
 ];
 

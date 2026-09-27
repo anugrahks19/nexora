@@ -363,7 +363,7 @@ function Hero() {
 
 function Intro() {
   return (
-    <section id="about" className="border-y border-[hsl(var(--border))] py-16 md:py-24">
+    <section id="about" className="border-b border-[hsl(var(--border))] py-16 md:py-24">
       <div className="container-nx">
         <Reveal>
           <NexoraSharedTabs />

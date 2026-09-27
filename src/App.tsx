@@ -338,8 +338,8 @@ function Hero() {
           <div className="mt-8 hidden items-center gap-3 lg:flex"><span className="mono text-[.6rem] text-[hsl(var(--muted-foreground))]">Scroll to explore</span><span className="h-px w-14 bg-[hsl(var(--border))]" /></div>
 
           {/* Mobile responsive image display */}
-          <div className="mt-8 relative w-full h-[280px] sm:h-[380px] overflow-hidden border border-[hsl(var(--border))] rounded-2xl lg:hidden">
-            <img src={auditorium} alt="World-class acoustic auditorium with curved timber sound diffusion architecture" className="cinematic-img h-full w-full object-cover object-center" referrerPolicy="no-referrer" data-testid="img-hero-auditorium-mobile" />
+          <div className="mt-8 relative w-full h-[280px] sm:h-[380px] overflow-hidden rounded-2xl lg:hidden">
+            <img src={auditorium} alt="World-class acoustic auditorium with curved timber sound diffusion architecture" className="cinematic-img h-full w-full object-cover object-center scale-[1.01]" referrerPolicy="no-referrer" data-testid="img-hero-auditorium-mobile" />
             <div className="absolute bottom-4 left-4 flex items-center gap-2.5 bg-[hsl(var(--background)/92%)] backdrop-blur-sm px-3 py-1.5 border border-[hsl(var(--border))] rounded-lg">
               <span className="h-2 w-2 rounded-full bg-[hsl(var(--accent))]" />
               <span className="mono text-[.55rem]">Sound, shaped by space</span>
@@ -348,8 +348,8 @@ function Hero() {
         </div>
         
         {/* Desktop right-aligned image as a rounded floating card */}
-        <div className="hidden lg:block lg:col-span-6 xl:col-span-6 relative h-[55vh] min-h-[450px] max-h-[700px] mt-6 lg:mt-10 xl:mt-14 -ml-4 -mr-4 lg:-ml-8 lg:-mr-6 xl:-ml-10 xl:-mr-8 rounded-[2rem] overflow-hidden shadow-[0_40px_100px_rgba(40,30,20,0.15)] border border-[hsl(var(--border)/40%)]">
-          <img src={auditorium} alt="World-class acoustic auditorium" className="hero-image cinematic-img h-full w-full object-cover object-center" referrerPolicy="no-referrer" data-testid="img-hero-auditorium" />
+        <div className="hidden lg:block lg:col-span-6 xl:col-span-6 relative h-[55vh] min-h-[450px] max-h-[700px] mt-6 lg:mt-10 xl:mt-14 -ml-4 -mr-4 lg:-ml-8 lg:-mr-6 xl:-ml-10 xl:-mr-8 rounded-[2rem] overflow-hidden shadow-[0_40px_100px_rgba(40,30,20,0.15)] bg-transparent">
+          <img src={auditorium} alt="World-class acoustic auditorium" className="hero-image cinematic-img h-full w-full object-cover object-center scale-[1.01]" referrerPolicy="no-referrer" data-testid="img-hero-auditorium" />
           <div className="absolute bottom-6 right-6 flex items-center gap-3 bg-[hsl(var(--background)/92%)] backdrop-blur-md px-4 py-2 rounded-xl border border-[hsl(var(--border))] text-[hsl(var(--foreground))] shadow-md">
             <span className="h-2 w-2 rounded-full bg-[hsl(var(--accent))]" />
             <span className="mono text-[.58rem]">Sound, shaped by space</span>

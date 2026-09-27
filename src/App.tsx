@@ -71,7 +71,7 @@ const services = [
       'Breakout noise assessment',
       'Outdoor noise assessment.'
     ],
-    pointerColor: '#4f7285'
+    pointerColor: '#1e3a8a' // Dark blue
   },
   {
     id: 3,
@@ -91,7 +91,7 @@ const services = [
       'Noise mitigation',
       'Sound transmission analysis'
     ],
-    pointerColor: '#63755c'
+    pointerColor: '#87ceeb' // Light blue
   },
   {
     id: 4,

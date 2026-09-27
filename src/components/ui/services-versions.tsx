@@ -19,7 +19,7 @@ export function V3AccordionCard({ service }: { service: any }) {
         
         <Pointer>
           <motion.div 
-            className="flex h-6 w-6 items-center justify-center rounded-full backdrop-blur-md"
+            className="flex h-3 w-3 items-center justify-center rounded-full backdrop-blur-md"
             animate={{ scale: [1, 1.2, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             style={{ 

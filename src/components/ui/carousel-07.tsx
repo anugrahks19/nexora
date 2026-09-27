@@ -152,7 +152,7 @@ export const CarouselStacked = ({ slides }: { slides: Slide[] }) => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full pb-10 bg-transparent select-none">
-      <div className="relative w-full h-60 sm:h-80 lg:h-[24rem] xl:h-[30rem] mt-4 flex items-start justify-center">
+      <div className="relative w-full h-72 sm:h-80 lg:h-[24rem] xl:h-[30rem] mt-4 flex items-start justify-center">
         {/* Transparent Drag Surface */}
         <motion.div
           drag="x"
@@ -233,7 +233,7 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
       }}
       className={cn(
         "absolute rounded-2xl overflow-hidden bg-[hsl(var(--card))] group pointer-events-none shadow-xl border border-[hsl(var(--border))]",
-        "w-64 h-40 sm:w-[24rem] sm:h-[15rem] lg:w-[30rem] lg:h-[18.75rem] xl:w-[36rem] xl:h-[22.5rem] 2xl:w-[40rem] 2xl:h-[25rem]",
+        "w-72 h-48 sm:w-[24rem] sm:h-[15rem] lg:w-[30rem] lg:h-[18.75rem] xl:w-[36rem] xl:h-[22.5rem] 2xl:w-[40rem] 2xl:h-[25rem]",
       )}
     >
       <img

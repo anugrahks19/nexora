@@ -940,10 +940,10 @@ function Footer() {
         </div>
       </div>
       
-      <div className="absolute bottom-[-60px] md:bottom-[-90px] left-1/2 -translate-x-1/2 pointer-events-none flex select-none justify-center z-0">
+      <div className="absolute bottom-[-30px] md:bottom-[-90px] left-1/2 -translate-x-1/2 pointer-events-none flex select-none justify-center z-0">
         <span 
           className="whitespace-nowrap font-bold tracking-[-0.06em] text-[hsl(var(--primary-foreground)/.15)]" 
-          style={{ fontSize: 'clamp(220px, 25vw, 500px)', fontFamily: 'var(--app-font-heading)' }}
+          style={{ fontSize: 'clamp(80px, 20vw, 500px)', fontFamily: 'var(--app-font-heading)' }}
         >
           NEXORA
         </span>

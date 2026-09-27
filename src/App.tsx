@@ -971,8 +971,13 @@ function Footer() {
 function InteractiveBackground() {
   const [position, setPosition] = useState({ x: -1000, y: -1000 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     let rafId: number;
     
     const updatePosition = (x: number, y: number) => {
@@ -985,16 +990,13 @@ function InteractiveBackground() {
 
     const handleMouseMove = (e: MouseEvent) => updatePosition(e.clientX, e.clientY);
     const handleTouch = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
+      if (e.touches.length > 0 && !isMobile) {
         updatePosition(e.touches[0].clientX, e.touches[0].clientY);
       }
     };
     
     const handleMouseLeave = () => setIsHovering(false);
-    const handleTouchEnd = () => {
-      // Keep it visible on mobile at the last touched position
-      // Alternatively, we could fade it out, but keeping it looks better on mobile
-    };
+    const handleTouchEnd = () => {};
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('touchstart', handleTouch, { passive: true });
@@ -1003,6 +1005,7 @@ function InteractiveBackground() {
     window.addEventListener('touchend', handleTouchEnd);
 
     return () => {
+      window.removeEventListener('resize', checkMobile);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchstart', handleTouch);
       window.removeEventListener('touchmove', handleTouch);
@@ -1010,19 +1013,23 @@ function InteractiveBackground() {
       window.removeEventListener('touchend', handleTouchEnd);
       cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div
       className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-1000"
-      style={{ opacity: isHovering ? 1 : 0 }}
+      style={{ opacity: (isHovering || isMobile) ? 1 : 0 }}
     >
       <div 
         className="absolute inset-0"
-        style={{ background: `radial-gradient(circle 400px at ${position.x}px ${position.y}px, hsl(var(--accent)/0.06), transparent 70%)` }}
+        style={{ 
+          background: isMobile
+            ? `radial-gradient(100% 100% at 50% 0%, hsl(var(--accent)/0.03), transparent 80%)`
+            : `radial-gradient(circle 400px at ${position.x}px ${position.y}px, hsl(var(--accent)/0.06), transparent 70%)` 
+        }}
       />
       <div 
-        className="absolute inset-0"
+        className={`absolute inset-0 transition-opacity duration-1000 ${isMobile ? "opacity-40" : "opacity-100"}`}
         style={{
           backgroundSize: '320px 320px, 320px 320px, 80px 80px, 80px 80px',
           backgroundImage: `
@@ -1031,8 +1038,12 @@ function InteractiveBackground() {
             linear-gradient(to right, hsl(var(--foreground)/0.08) 1px, transparent 1px), 
             linear-gradient(to bottom, hsl(var(--foreground)/0.08) 1px, transparent 1px)
           `,
-          maskImage: `radial-gradient(circle 400px at ${position.x}px ${position.y}px, black 10%, transparent 80%)`,
-          WebkitMaskImage: `radial-gradient(circle 400px at ${position.x}px ${position.y}px, black 10%, transparent 80%)`,
+          maskImage: isMobile
+            ? `radial-gradient(120% 100% at 50% 0%, black 0%, transparent 80%)`
+            : `radial-gradient(circle 400px at ${position.x}px ${position.y}px, black 10%, transparent 80%)`,
+          WebkitMaskImage: isMobile
+            ? `radial-gradient(120% 100% at 50% 0%, black 0%, transparent 80%)`
+            : `radial-gradient(circle 400px at ${position.x}px ${position.y}px, black 10%, transparent 80%)`,
         }}
       />
     </div>

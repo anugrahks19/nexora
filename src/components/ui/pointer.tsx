@@ -37,6 +37,10 @@ export function Pointer({
       const parentElement = containerRef.current.parentElement;
 
       if (parentElement) {
+        // Only run pointer logic if device supports hover
+        const isHoverable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        if (!isHoverable) return;
+
         // Add cursor-none to parent
         parentElement.style.cursor = "none";
 

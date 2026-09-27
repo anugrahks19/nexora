@@ -10,11 +10,11 @@ export function V3AccordionCard({ service }: { service: any }) {
   return (
     <div className="flex flex-col gap-4">
       <TiltCard 
-        className="group relative rounded-3xl overflow-hidden bg-transparent border border-[hsl(var(--border))] hover:border-[hsl(var(--accent))] shadow-lg hover:shadow-2xl flex items-center justify-center cursor-pointer transition-colors duration-500"
+        className="group relative rounded-3xl overflow-hidden bg-transparent border border-[hsl(var(--border))] lg:hover:border-[hsl(var(--accent))] shadow-lg lg:hover:shadow-2xl flex items-center justify-center cursor-pointer transition-colors duration-500 aspect-video w-full"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="relative w-full h-full flex items-center justify-center">
-          <img src={service.image} alt={service.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.05]" />
+          <img src={service.image} alt={service.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] lg:group-hover:scale-[1.05]" />
         </div>
         
         <Pointer>
@@ -29,7 +29,7 @@ export function V3AccordionCard({ service }: { service: any }) {
         </Pointer>
       </TiltCard>
       
-      <div className="bg-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] p-4 shadow-sm transition-colors hover:border-[hsl(var(--accent))] cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+      <div className="bg-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] p-4 shadow-sm transition-colors lg:hover:border-[hsl(var(--accent))] cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <button className="flex items-center justify-between w-full text-left">
           <div>
             <h3 className="font-bold font-serif text-lg text-[hsl(var(--foreground))]">{service.title}</h3>

@@ -373,217 +373,61 @@ function Intro() {
   );
 }
 
-function V2Card({ service }: { service: any }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const isHovered = useMotionValue(0);
+import LiquidGlassCursor from '@/components/ui/liquid-glass-cursor';
+import { useMousePosition } from '@/components/hooks/use-mouse-position';
 
-  const springConfig = { stiffness: 300, damping: 30 };
-  const mouseXSpring = useSpring(x, springConfig);
-  const mouseYSpring = useSpring(y, springConfig);
-  const hoverSpring = useSpring(isHovered, { stiffness: 200, damping: 20 });
-
-  // Pan the image slightly in opposite direction of mouse
-  const translateX = useTransform(mouseXSpring, [-0.5, 0.5], ["-12px", "12px"]);
-  const translateY = useTransform(mouseYSpring, [-0.5, 0.5], ["-12px", "12px"]);
-  
-  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
-  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
-  
-  // Scale the container slightly on hover
-  const scale = useTransform(hoverSpring, [0, 1], [1, 1.02]);
-  
-  // Hover drop shadow
-  const shadowY = useTransform(hoverSpring, [0, 1], ["5px", "20px"]);
-  const shadowBlur = useTransform(hoverSpring, [0, 1], ["15px", "40px"]);
-  const shadowOpacity = useTransform(hoverSpring, [0, 1], [0.05, 0.2]);
-  const boxShadow = useMotionTemplate`0 ${shadowY} ${shadowBlur} rgba(0,0,0,${shadowOpacity})`;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
+function V2GlassServices() {
   return (
-    <motion.div
-      className="service-v2-card relative rounded-3xl overflow-hidden bg-[hsl(var(--muted)/20%)] border border-[hsl(var(--border)/40%)] cursor-pointer h-full flex items-center justify-center p-0"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => isHovered.set(1)}
-      onMouseLeave={() => {
-        isHovered.set(0);
-        x.set(0);
-        y.set(0);
-      }}
-      style={{ scale, boxShadow }}
-    >
-      <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        {/* We make the image slightly larger so it can pan without showing edges */}
-        <motion.img 
-          src={service.image} 
-          alt={service.title} 
-          className="w-[106%] max-w-[106%] h-[106%] object-contain"
-          style={{ x: translateX, y: translateY }}
-        />
-      </div>
-
-      {/* Dynamic Shine Effect */}
-      <motion.div 
-        className="pointer-events-none absolute inset-0 z-10 rounded-3xl mix-blend-overlay"
-        style={{
-          opacity: hoverSpring,
-          background: useMotionTemplate`radial-gradient(circle at ${glareX} ${glareY}, rgba(255,255,255,0.4) 0%, transparent 60%)`,
-        }}
-      />
-    </motion.div>
+    <LiquidGlassCursor className="w-full rounded-3xl" size={150} magnification={1.15} bgColor="transparent">
+       <div className="grid md:grid-cols-2 gap-6 lg:gap-10 p-4">
+          {services.map(service => (
+            <div key={service.id} className="relative rounded-3xl overflow-hidden bg-transparent border border-[hsl(var(--border))] shadow-lg flex items-center justify-center aspect-video w-full" data-cursor="button">
+               <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
+               <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-6">
+                 <h3 className="text-white font-bold text-2xl font-serif" data-cursor="text">{service.title}</h3>
+                 <p className="text-white/80 mt-2 text-sm">{service.sub}</p>
+               </div>
+            </div>
+          ))}
+       </div>
+    </LiquidGlassCursor>
   );
 }
 
-function ServicesV2() {
+function V3InteractiveCard({ service }: { service: any }) {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      // Elegant Staggered 3D Reveal on scroll
-      gsap.fromTo('.service-v2-card', 
-        { y: 100, opacity: 0, scale: 0.95, rotationY: 8, rotationX: 4 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          rotationY: 0,
-          rotationX: 0,
-          duration: 1.2,
-          stagger: 0.15,
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 85%",
-          }
-        }
-      );
-    }, containerRef);
-    
-    return () => ctx.revert();
-  }, []);
-
+  const mousePos = useMousePosition(containerRef);
+  
   return (
-    <div ref={containerRef} className="grid md:grid-cols-2 gap-6 lg:gap-10 mt-12 w-full max-w-6xl mx-auto" style={{ perspective: "1200px" }}>
-      {services.map((service, index) => (
-        <V2Card key={service.id} service={service} />
-      ))}
+    <div ref={containerRef} className="relative rounded-3xl overflow-hidden border border-[hsl(var(--border))] aspect-video w-full group cursor-pointer">
+       <div className="absolute inset-0 z-0 bg-muted">
+         <img src={service.image} className="w-full h-full object-cover opacity-60 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100" />
+       </div>
+       <div 
+         className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100 mix-blend-overlay"
+         style={{
+           background: `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, ${service.pointerColor || 'rgba(255,255,255,1)'}, transparent 80%)`
+         }}
+       />
+       <div className="absolute inset-0 z-20 flex flex-col justify-end p-6 pointer-events-none bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          <h3 className="text-white font-bold font-serif text-2xl drop-shadow-md">{service.title}</h3>
+          <p className="text-white/80 mt-1 text-sm">{service.sub}</p>
+       </div>
     </div>
-  );
+  )
 }
 
-function V3Card({ service }: { service: any }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const isHovered = useMotionValue(0);
-
-  const springConfig = { stiffness: 300, damping: 30 };
-  const mouseXSpring = useSpring(x, springConfig);
-  const mouseYSpring = useSpring(y, springConfig);
-  const hoverSpring = useSpring(isHovered, { stiffness: 200, damping: 20 });
-
-  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
-  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
-  
-  // Scale the container slightly on hover
-  const scale = useTransform(hoverSpring, [0, 1], [1, 1.02]);
-  
-  // Hover drop shadow
-  const shadowY = useTransform(hoverSpring, [0, 1], ["5px", "20px"]);
-  const shadowBlur = useTransform(hoverSpring, [0, 1], ["15px", "40px"]);
-  const shadowOpacity = useTransform(hoverSpring, [0, 1], [0.05, 0.2]);
-  const boxShadow = useMotionTemplate`0 ${shadowY} ${shadowBlur} rgba(0,0,0,${shadowOpacity})`;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
+function V3Services() {
   return (
-    <motion.div
-      className="service-v2-card relative rounded-3xl overflow-hidden bg-[hsl(var(--muted)/20%)] border border-[hsl(var(--border)/40%)] cursor-pointer h-full flex items-center justify-center p-0"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => isHovered.set(1)}
-      onMouseLeave={() => {
-        isHovered.set(0);
-        x.set(0);
-        y.set(0);
-      }}
-      style={{ scale, boxShadow }}
-    >
-      <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        <motion.img 
-          src={service.image} 
-          alt={service.title} 
-          className="w-full h-auto object-contain"
-        />
-      </div>
-
-      {/* Dynamic Shine Effect */}
-      <motion.div 
-        className="pointer-events-none absolute inset-0 z-10 rounded-3xl mix-blend-overlay"
-        style={{
-          opacity: hoverSpring,
-          background: useMotionTemplate`radial-gradient(circle at ${glareX} ${glareY}, rgba(255,255,255,0.4) 0%, transparent 60%)`,
-        }}
-      />
-    </motion.div>
-  );
-}
-
-function ServicesV3() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      // Standard Staggered Reveal on scroll
-      gsap.fromTo('.service-v2-card', 
-        { y: 80, opacity: 0, scale: 0.95 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 1,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 85%",
-          }
-        }
-      );
-    }, containerRef);
-    
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <div ref={containerRef} className="grid md:grid-cols-2 gap-6 lg:gap-10 mt-12 w-full max-w-6xl mx-auto">
-      {services.map((service, index) => (
-        <V3Card key={service.id} service={service} />
-      ))}
+    <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
+      {services.map(service => <V3InteractiveCard key={service.id} service={service} />)}
     </div>
-  );
+  )
 }
 
 function Services() {
+  const [version, setVersion] = useState<'v1' | 'v2' | 'v3'>('v1');
+
   return (
     <section id="services" className="relative border-b border-[hsl(var(--border))] py-20 md:py-28 overflow-hidden bg-[hsl(var(--background))]">
       <div className="container-nx">
@@ -598,6 +442,11 @@ function Services() {
               </h2>
             </div>
             <div className="mt-6 md:mt-0 flex flex-col items-start md:items-end gap-5">
+              <div className="flex bg-[hsl(var(--muted))] p-1 rounded-full border border-[hsl(var(--border))]">
+                <button onClick={() => setVersion('v1')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${version === 'v1' ? 'bg-[hsl(var(--background))] shadow-sm' : 'text-muted-foreground'}`}>V1 (Dots)</button>
+                <button onClick={() => setVersion('v2')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${version === 'v2' ? 'bg-[hsl(var(--background))] shadow-sm' : 'text-muted-foreground'}`}>V2 (Lens)</button>
+                <button onClick={() => setVersion('v3')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${version === 'v3' ? 'bg-[hsl(var(--background))] shadow-sm' : 'text-muted-foreground'}`}>V3 (Glow)</button>
+              </div>
               <p className="max-w-[400px] text-[1.05rem] leading-7 text-[hsl(var(--muted-foreground))]">
                 Comprehensive acoustic design, analysis, and testing for better-performing environments.
               </p>
@@ -605,13 +454,27 @@ function Services() {
           </div>
         </Reveal>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-10 perspective-1000" style={{ perspective: "1000px" }}>
-          {services.map((service, index) => (
-            <Reveal key={service.id} delay={`reveal-delay-${(index % 2) + 1}`}>
-              <V3AccordionCard service={service} />
-            </Reveal>
-          ))}
-        </div>
+        {version === 'v1' && (
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-10 perspective-1000" style={{ perspective: "1000px" }}>
+            {services.map((service, index) => (
+              <Reveal key={service.id} delay={`reveal-delay-${(index % 2) + 1}`}>
+                <V3AccordionCard service={service} />
+              </Reveal>
+            ))}
+          </div>
+        )}
+        
+        {version === 'v2' && (
+          <Reveal>
+            <V2GlassServices />
+          </Reveal>
+        )}
+
+        {version === 'v3' && (
+          <Reveal>
+            <V3Services />
+          </Reveal>
+        )}
       </div>
     </section>
   );
